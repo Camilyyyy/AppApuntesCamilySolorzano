@@ -3,18 +3,17 @@
     x:Class="AppApuntesCamilySolorzano.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:AppApuntesCamilySolorzano"
+    xmlns:views="clr-namespace:AppApuntesCamilySolorzano.Views"
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
         <ShellContent
-            Title="Notes"
-            ContentTemplate="{DataTemplate local:NotePage}"
-            Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
-
+         Title="Sobre Mi"
+         ContentTemplate="{DataTemplate views:AboutPage}"
+         Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
         <ShellContent
-            Title="About"
-            ContentTemplate="{DataTemplate local:AboutPage}"
+            Title="Notas"
+            ContentTemplate="{DataTemplate views:NotePage}"
             Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
     </TabBar>
 

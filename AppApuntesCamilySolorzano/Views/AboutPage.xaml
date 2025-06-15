@@ -4,14 +4,17 @@
              x:Class="AppApuntesCamilySolorzano.Views.AboutPage"
              Title="CamilySolorzano">
     <VerticalStackLayout Spacing="10" Margin="10">
-        <HorizontalStackLayout Spacing="10">
-            <Image Source="dotnet_bot.png"
-                   SemanticProperties.Description="The dot net bot waving hello!"
-                   HeightRequest="64" />
-            <Label FontSize="22" FontAttributes="Bold" Text="Notes" VerticalOptions="End" />
-            <Label FontSize="22" Text="v1.0" VerticalOptions="End" />
+        
+        <StackLayout  >
+            <Label Text="Camily Solorzano" FontSize="35"/>
+            <Label HeightRequest="15"/>
+            <Label Text="Me llamo Camily y me gustan los gatos" FontSize="30"/>
+        </StackLayout>
+
+        <HorizontalStackLayout Spacing="10" >
+            <Image Source="imagenrepresentativa.jpeg"/>
         </HorizontalStackLayout>
-        <Label Text="This app is written in XAML and C# with .NET MAUI." />
-        <Button Text="Learn more..." Clicked="LearnMore_Clicked" />
+        
     </VerticalStackLayout>
 </ContentPage>
+
