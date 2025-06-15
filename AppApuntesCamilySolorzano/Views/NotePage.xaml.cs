@@ -1,4 +1,4 @@
-namespace AppApuntesCamilySolorzano;
+namespace AppApuntesCamilySolorzano.Views;
 
 public partial class NotePage : ContentPage
 {
