@@ -4,12 +4,23 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AppApuntesCamilySolorzano"
-    Shell.FlyoutBehavior="Disabled"
-    Title="AppApuntesCamilySolorzano">
+    Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Notes"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
+
+        <ShellContent
+            Title="About"
+            ContentTemplate="{DataTemplate local:AboutPage}"
+            Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
+
+        <ShellContent
+     Title="About"
+     ContentTemplate="{DataTemplate local:NotePage}"
+     Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
+    </TabBar>
 
 </Shell>
