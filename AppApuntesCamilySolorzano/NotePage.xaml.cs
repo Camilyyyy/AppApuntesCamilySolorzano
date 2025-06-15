@@ -19,7 +19,6 @@ public partial class NotePage : ContentPage
 
     private void DeleteButton_Clicked(object sender, EventArgs e)
     {
-        // Delete the file.
         if (File.Exists(_fileName))
             File.Delete(_fileName);
 
