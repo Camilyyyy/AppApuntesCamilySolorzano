@@ -8,9 +8,10 @@ namespace AppApuntesCamilySolorzano.Models
 {
     internal class About
     {
-        public string Title => AppInfo.Name;
+        public string Title => "Camily Solorzano";
         public string Version => AppInfo.VersionString;
         public string MoreInfoUrl => "https://aka.ms/maui";
-        public string Message => "This app was written by Camily";
+        public string Message => "Me llamo Camily y me gustan los gatos";
+        public string Image => "imagenrepresentativa.jpeg";
     }
 }
