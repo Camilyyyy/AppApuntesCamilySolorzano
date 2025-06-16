@@ -13,7 +13,7 @@
          Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
         <ShellContent
             Title="Notas"
-            ContentTemplate="{DataTemplate views:NotePage}"
+            ContentTemplate="{DataTemplate views:AllNotesPage}"
             Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
     </TabBar>
 
