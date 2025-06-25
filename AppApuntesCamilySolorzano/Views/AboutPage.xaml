@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppApuntesCamilySolorzano.Views.AboutPage"
-             xmlns:models="clr-namespace:AppApuntesCamilySolorzano.Models"
+             xmlns:viewModels="clr-namespace:AppApuntesCamilySolorzano.ViewModels"
+             x:DataType="viewModels:AboutViewModel"
              Title="CamilySolorzano">
     <ContentPage.BindingContext>
-        <models:About/>
+        <viewModels:AboutViewModel />
     </ContentPage.BindingContext>
         
     <VerticalStackLayout Spacing="10" Margin="10">
