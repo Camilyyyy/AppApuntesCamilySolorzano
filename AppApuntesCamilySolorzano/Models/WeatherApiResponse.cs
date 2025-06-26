@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppApuntesCamilySolorzano.Models
 {
-    internal class WeatherApiResponse
+    public class WeatherApiResponse
     {
         [JsonProperty("latitude")]
         public double Latitude { get; set; }
