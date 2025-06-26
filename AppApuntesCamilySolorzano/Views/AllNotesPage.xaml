@@ -4,6 +4,7 @@
              xmlns:viewModels="clr-namespace:AppApuntesCamilySolorzano.ViewModels"
              x:Class="AppApuntesCamilySolorzano.Views.AllNotesPage"
              Title="Tus Notas"
+             NavigatedTo="ContentPage_NavigatedTo"
              x:DataType="viewModels:NotesViewModel">
 
     <ContentPage.BindingContext>
