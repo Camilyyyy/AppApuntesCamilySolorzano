@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppApuntesCamilySolorzano.Models
 {
-    internal class WeatherDisplayModel
+    public class WeatherDisplayModel
     {
         public DateTime Timestamp { get; set; }
         public double Temperature { get; set; }
