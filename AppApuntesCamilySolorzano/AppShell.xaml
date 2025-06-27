@@ -15,6 +15,10 @@
             Title="Notas"
             ContentTemplate="{DataTemplate views:AllNotesPage}"
             Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
+        <ShellContent
+        Title="Notas"
+        ContentTemplate="{DataTemplate views:WeatherPage}"
+        Icon="{OnPlatform 'iconcat.png', iOS='iconcat.png', MacCatalyst='iconcat.png'}" />
     </TabBar>
 
 </Shell>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppApuntesCamilySolorzano.Repositories
 {
-    public class WeatherRepository
+    public class WeatherRepository : IWeatherRepository
     {
         private readonly IWeatherApiService _weatherApiService;
 

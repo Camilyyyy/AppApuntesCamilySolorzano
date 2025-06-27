@@ -1,4 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using AppApuntesCamilySolorzano.Services;
+using AppApuntesCamilySolorzano.Repositories;
+using AppApuntesCamilySolorzano.Views;
+using AppApuntesCamilySolorzano.ViewModels;
 
 namespace AppApuntesCamilySolorzano
 {
@@ -15,10 +19,24 @@ namespace AppApuntesCamilySolorzano
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            // Registrar HttpClient
+            builder.Services.AddHttpClient<IWeatherApiService, WeatherApiService>();
 
+            // Registrar servicios de infraestructura
+            builder.Services.AddSingleton<IWeatherApiService, WeatherApiService>();
+
+            // Registrar repositorios
+            builder.Services.AddSingleton<IWeatherRepository, WeatherRepository>();
+
+            // Registrar ViewModels
+            builder.Services.AddTransient<WeatherViewModel>();
+
+            // Registrar páginas
+            builder.Services.AddTransient<WeatherPage>();
+
+#if DEBUG
+            builder.Logging.AddDebug();
+#endif
             return builder.Build();
         }
     }

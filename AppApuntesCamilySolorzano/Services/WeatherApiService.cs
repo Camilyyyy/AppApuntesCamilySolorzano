@@ -11,7 +11,6 @@ namespace AppApuntesCamilySolorzano.Services
     public class WeatherApiService : IWeatherApiService
     {
         private readonly HttpClient _httpClient;
-        private const string apiurl = "https://api.open-meteo.com/v1/forecast?latitude=46.9481&longitude=7.4474&current=temperature_2m,relative_humidity_2m,rain";
 
         public WeatherApiService(HttpClient httpClient)
         {
@@ -21,6 +20,7 @@ namespace AppApuntesCamilySolorzano.Services
         {
             try
             {
+                var apiurl= $"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,relative_humidity_2m,rain";
                 var response = await _httpClient.GetAsync(apiurl);
                 response.EnsureSuccessStatusCode();
                 var jsonresponse = await response.Content.ReadAsStringAsync();
