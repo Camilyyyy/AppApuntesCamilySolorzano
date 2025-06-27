@@ -18,125 +18,167 @@ namespace AppApuntesCamilySolorzano.ViewModels
     public class WeatherViewModel : INotifyPropertyChanged
     {
         private readonly IWeatherRepository _weatherRepository;
+        private WeatherDisplayModel _currentWeather;
+        private bool _isLoading;
+        private string _errorMessage = string.Empty;
 
-        private string _hora;
-        private double _temperatura;
-        private int _humedad;
-        private double _lluvia;
-        private string _unidadTemperatura;
-        private string _unidadHumedad;
-        private string _unidadLluvia;
         public WeatherViewModel(IWeatherRepository weatherRepository)
         {
             _weatherRepository = weatherRepository;
+            _currentWeather = new WeatherDisplayModel();
 
-            LoadWeatherCommand = new Command(async () => await LoadCurrentWeatherData());
-
+            // Inicializar comando
+            UpdateWeatherCommand = new Command(async () => await UpdateWeatherAsync());
         }
 
-        public string Hora
+        #region Properties
+
+        public WeatherDisplayModel CurrentWeather
         {
-            get => _hora;
+            get => _currentWeather;
             set
             {
-                _hora = value;
+                _currentWeather = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(FormattedTime));
+                OnPropertyChanged(nameof(FormattedTemperature));
+                OnPropertyChanged(nameof(FormattedHumidity));
+                OnPropertyChanged(nameof(FormattedRain));
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
                 OnPropertyChanged();
             }
         }
 
-        public double Temperatura
+        public string ErrorMessage
         {
-            get => _temperatura;
+            get => _errorMessage;
             set
             {
-                _temperatura = value;
+                _errorMessage = value;
                 OnPropertyChanged();
             }
         }
 
-        public int Humedad
-        {
-            get => _humedad;
-            set
-            {
-                _humedad = value;
-                OnPropertyChanged();
-            }
-        }
+        // Propiedades formateadas para la UI
+        public string FormattedTime => CurrentWeather?.Timestamp.ToString("HH:mm") ?? "--:--";
+        public string FormattedTemperature => CurrentWeather != null ?
+            $"{CurrentWeather.Temperature:F1}{CurrentWeather.TemperatureUnit}" : "0°C";
+        public string FormattedHumidity => CurrentWeather != null ?
+            $"{CurrentWeather.Humidity:F0}{CurrentWeather.HumidityUnit}" : "0%";
+        public string FormattedRain => CurrentWeather != null ?
+            $"{CurrentWeather.Rain:F1}{CurrentWeather.RainUnit}" : "0mm";
 
-        public double Lluvia
-        {
-            get => _lluvia;
-            set
-            {
-                _lluvia = value;
-                OnPropertyChanged();
-            }
-        }
+        #endregion
 
-        public string UnidadTemperatura
-        {
-            get => _unidadTemperatura;
-            set
-            {
-                _unidadTemperatura = value;
-                OnPropertyChanged();
-            }
-        }
+        #region Commands
 
-        public string UnidadHumedad
-        {
-            get => _unidadHumedad;
-            set
-            {
-                _unidadHumedad = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICommand UpdateWeatherCommand { get; }
 
-        public string UnidadLluvia
-        {
-            get => _unidadLluvia;
-            set
-            {
-                _unidadLluvia = value;
-                OnPropertyChanged();
-            }
-        }
+        #endregion
 
-        public ICommand LoadWeatherCommand { get; }
+        #region Methods
 
-        private async Task LoadCurrentWeatherData()
+        private async Task UpdateWeatherAsync()
         {
             try
             {
+                IsLoading = true;
+                ErrorMessage = string.Empty;
 
+                Console.WriteLine("Iniciando actualización del clima...");
 
-                var weatherData = await _weatherRepository.GetCurrentWeather(46.94, 7.44);
+                // Obtener ubicación actual
+                var location = await GetCurrentLocationAsync();
 
-                UpdateWeatherDisplay(weatherData);
+                if (location != null)
+                {
+                    Console.WriteLine($"Ubicación obtenida: Lat={location.Latitude}, Lon={location.Longitude}");
+
+                    // Obtener datos del clima
+                    var weatherData = await _weatherRepository.GetCurrentWeather(
+                        location.Latitude,
+                        location.Longitude);
+
+                    CurrentWeather = weatherData;
+                    Console.WriteLine("Datos del clima obtenidos exitosamente");
+                }
+                else
+                {
+                    ErrorMessage = "No se pudo obtener la ubicación";
+                }
             }
             catch (Exception ex)
             {
-               
+                ErrorMessage = $"Error: {ex.Message}";
+                Console.WriteLine($"Error en UpdateWeatherAsync: {ex}");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
-        private void UpdateWeatherDisplay(WeatherDisplayModel weatherData)
+        private async Task<Location?> GetCurrentLocationAsync()
         {
-            Hora = weatherData.Timestamp.ToString("dd/MM/yyyy HH:mm");
-            Temperatura = weatherData.Temperature;
-            Humedad = weatherData.Humidity;
-            Lluvia = weatherData.Rain;
-            UnidadTemperatura = weatherData.TemperatureUnit;
-            UnidadHumedad = weatherData.HumidityUnit;
-            UnidadLluvia = weatherData.RainUnit;
+            try
+            {
+                // Verificar permisos de ubicación
+                var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+
+                if (status != PermissionStatus.Granted)
+                {
+                    ErrorMessage = "Se requieren permisos de ubicación";
+                    // Usar coordenadas de Quito por defecto
+                    Console.WriteLine("Permisos de ubicación denegados, usando Quito por defecto");
+                    return new Location(-0.1807, -78.4678);
+                }
+
+                // Obtener ubicación actual
+                var request = new GeolocationRequest
+                {
+                    DesiredAccuracy = GeolocationAccuracy.Medium,
+                    Timeout = TimeSpan.FromSeconds(10)
+                };
+
+                var location = await Geolocation.GetLocationAsync(request);
+
+                if (location == null)
+                {
+                    Console.WriteLine("No se pudo obtener ubicación, usando Quito por defecto");
+                    return new Location(-0.1807, -78.4678);
+                }
+
+                return location;
+            }
+            catch (Exception ex)
+            {
+                // Si falla, usar coordenadas de Quito por defecto
+                Console.WriteLine($"Error obteniendo ubicación: {ex.Message}");
+                ErrorMessage = $"Usando ubicación por defecto. Error: {ex.Message}";
+                return new Location(-0.1807, -78.4678); // Quito, Ecuador
+            }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
 

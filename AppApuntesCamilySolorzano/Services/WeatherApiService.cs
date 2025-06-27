@@ -14,23 +14,50 @@ namespace AppApuntesCamilySolorzano.Services
 
         public WeatherApiService(HttpClient httpClient)
         {
-            _httpClient = httpClient ;
+            _httpClient = httpClient;
         }
+
         public async Task<WeatherApiResponse> GetWeatherData(double latitude, double longitude)
         {
             try
             {
-                var apiurl= $"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,relative_humidity_2m,rain";
-                var response = await _httpClient.GetAsync(apiurl);
+                // Formatear las coordenadas con cultura invariante para evitar problemas con separadores decimales
+                var latStr = latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture);
+                var lonStr = longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture);
+
+                var apiUrl = $"https://api.open-meteo.com/v1/forecast?latitude={latStr}&longitude={lonStr}&current=temperature_2m,relative_humidity_2m,rain";
+
+                Console.WriteLine($"API URL: {apiUrl}"); // Para debugging
+
+                var response = await _httpClient.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode();
-                var jsonresponse = await response.Content.ReadAsStringAsync();
-                var dataWeather = JsonSerializer.Deserialize<WeatherApiResponse>(jsonresponse);
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"API Response: {jsonResponse}"); // Para debugging
+
+                // Configurar JsonSerializer para ser más flexible
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    WriteIndented = true
+                };
+
+                var dataWeather = JsonSerializer.Deserialize<WeatherApiResponse>(jsonResponse, options);
+
+                if (dataWeather == null)
+                {
+                    throw new Exception("La respuesta de la API es null");
+                }
+
                 return dataWeather;
-            }catch (HttpRequestException ex) {
+            }
+            catch (HttpRequestException ex)
+            {
                 throw new Exception($"Error de conexión con la API: {ex.Message}");
             }
-            catch (JsonException ex) {
-                throw new Exception($"Error inesperado al procesar el json devuelto por la api: {ex.Message}");
+            catch (JsonException ex)
+            {
+                throw new Exception($"Error inesperado al procesar el JSON devuelto por la API: {ex.Message}");
             }
             catch (Exception ex)
             {

@@ -14,17 +14,19 @@ namespace AppApuntesCamilySolorzano.Repositories
 
         public WeatherRepository(IWeatherApiService weatherApiService)
         {
-            _weatherApiService= weatherApiService;
+            _weatherApiService = weatherApiService;
         }
 
         public async Task<WeatherDisplayModel> GetCurrentWeather(double latitude, double longitude)
         {
             try
             {
-                var apiResponse=await _weatherApiService.GetWeatherData(latitude, longitude);
+                var apiResponse = await _weatherApiService.GetWeatherData(latitude, longitude);
                 var weatherData = MapToWeatherData(apiResponse);
                 return weatherData;
-            }catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception($"Error al obtener datos del clima: {ex.Message}", ex);
             }
         }
@@ -36,19 +38,27 @@ namespace AppApuntesCamilySolorzano.Repositories
                 throw new ArgumentException("Respuesta de la API inválida");
             }
 
+            // Parsear la fecha de manera más robusta
+            DateTime timestamp;
+            if (!DateTime.TryParse(response.Current.Time, out timestamp))
+            {
+                timestamp = DateTime.Now; // Fallback a tiempo actual
+            }
+
             return new WeatherDisplayModel
             {
-                Timestamp = DateTime.Parse(response.Current.Time),
+                Timestamp = timestamp,
                 Temperature = response.Current.Temperature,
-                Humidity = response.Current.RelativeHumidity, 
+                Humidity = response.Current.RelativeHumidity,
                 Rain = response.Current.Rain,
-                TemperatureUnit = response.Units.Temperature,
-                HumidityUnit = response.Units.Humidity,
-                RainUnit = response.Units.Rain,
+                TemperatureUnit = response.Units.Temperature ?? "°C",
+                HumidityUnit = response.Units.Humidity ?? "%",
+                RainUnit = response.Units.Rain ?? "mm",
                 Latitude = response.Latitude,
                 Longitude = response.Longitude
             };
         }
     }
 }
+
 

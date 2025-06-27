@@ -6,106 +6,59 @@
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
 
-            <!-- Botones de control -->
-            <StackLayout Orientation="Horizontal" Spacing="10">
-                <Button Text="Actualizar Clima" 
-                        Command="{Binding LoadWeatherCommand}"
-                        BackgroundColor="#007ACC"
-                        TextColor="White"
-                        IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
-                        HorizontalOptions="FillAndExpand" />
-
-                <Button Text="Ver Historial" 
-                        Command="{Binding LoadHistoryCommand}"
-                        BackgroundColor="#28a745"
-                        TextColor="White"
-                        IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
-                        HorizontalOptions="FillAndExpand" />
-            </StackLayout>
+            <!-- Botón de acción -->
+            <Button Text="Actualizar Clima" 
+                    BackgroundColor="DodgerBlue" 
+                    TextColor="White"
+                    Command="{Binding UpdateWeatherCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
 
             <!-- Indicador de carga -->
             <ActivityIndicator IsVisible="{Binding IsLoading}" 
-                             IsRunning="{Binding IsLoading}"
-                             Color="#007ACC" />
+                             IsRunning="{Binding IsLoading}" 
+                             Color="DodgerBlue" />
 
             <!-- Mensaje de error -->
-            <Label Text="{Binding ErrorMessage}"
-                   TextColor="Red"
-                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
-                   FontSize="14" />
+            <Label Text="{Binding ErrorMessage}" 
+                   TextColor="Red" 
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
 
-            <!-- Datos del clima actual -->
-            <Frame BackgroundColor="LightBlue" 
-                   Padding="15" 
-                   CornerRadius="10"
-                   IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
-
-                <StackLayout Spacing="15">
+            <!-- Información del clima -->
+            <Frame BackgroundColor="LightBlue" Padding="20" CornerRadius="10">
+                <StackLayout>
                     <Label Text="Clima Actual" 
-                           FontSize="20" 
+                           FontSize="Large" 
                            FontAttributes="Bold" 
                            HorizontalOptions="Center" />
 
-                    <!-- Hora -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="🕒 Hora:" 
-                               FontSize="18" 
-                               FontAttributes="Bold" 
-                               VerticalOptions="Center" />
-                        <Label Text="{Binding Hora}" 
-                               FontSize="18" 
-                               VerticalOptions="Center" />
-                    </StackLayout>
+                    <StackLayout Spacing="10" Margin="0,20,0,0">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="🕐" FontSize="Medium" />
+                            <Label Text="Hora:" FontAttributes="Bold" />
+                            <Label Text="{Binding FormattedTime}" />
+                        </StackLayout>
 
-                    <!-- Temperatura -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="🌡️ Temperatura:" 
-                               FontSize="18" 
-                               FontAttributes="Bold" 
-                               VerticalOptions="Center" />
-                        <Label FontSize="18" VerticalOptions="Center">
-                            <Label.Text>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Temperatura" />
-                                    <Binding Path="UnidadTemperatura" />
-                                </MultiBinding>
-                            </Label.Text>
-                        </Label>
-                    </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="🌡️" FontSize="Medium" />
+                            <Label Text="Temperatura:" FontAttributes="Bold" />
+                            <Label Text="{Binding FormattedTemperature}" />
+                        </StackLayout>
 
-                    <!-- Humedad -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="💧 Humedad:" 
-                               FontSize="18" 
-                               FontAttributes="Bold" 
-                               VerticalOptions="Center" />
-                        <Label FontSize="18" VerticalOptions="Center">
-                            <Label.Text>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Humedad" />
-                                    <Binding Path="UnidadHumedad" />
-                                </MultiBinding>
-                            </Label.Text>
-                        </Label>
-                    </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="💧" FontSize="Medium" />
+                            <Label Text="Humedad:" FontAttributes="Bold" />
+                            <Label Text="{Binding FormattedHumidity}" />
+                        </StackLayout>
 
-                    <!-- Lluvia -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="🌧️ Lluvia:" 
-                               FontSize="18" 
-                               FontAttributes="Bold" 
-                               VerticalOptions="Center" />
-                        <Label FontSize="18" VerticalOptions="Center">
-                            <Label.Text>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Lluvia" />
-                                    <Binding Path="UnidadLluvia" />
-                                </MultiBinding>
-                            </Label.Text>
-                        </Label>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="🌧️" FontSize="Medium" />
+                            <Label Text="Lluvia:" FontAttributes="Bold" />
+                            <Label Text="{Binding FormattedRain}" />
+                        </StackLayout>
                     </StackLayout>
                 </StackLayout>
             </Frame>
+
         </StackLayout>
     </ScrollView>
 </ContentPage>
