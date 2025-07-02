@@ -13,7 +13,7 @@ namespace AppApuntesCamilySolorzano.ViewModels
         public string Title => "Camily Solorzano";
         public string Version => AppInfo.VersionString;
         public string MoreInfoUrl => "https://aka.ms/maui";
-        public string Message => "Me llamo Camily y me gustan los gatos"; 
+        public string Message => "Deporte Favorito:Atletismo"; 
         public string Image => "imagenrepresentativa.jpeg";
         public ICommand ShowMoreInfoCommand { get; }
 

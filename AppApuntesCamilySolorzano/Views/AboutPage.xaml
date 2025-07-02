@@ -8,16 +8,44 @@
     <ContentPage.BindingContext>
         <viewModels:AboutViewModel />
     </ContentPage.BindingContext>
-        
-    <VerticalStackLayout Spacing="10" Margin="10">
-        <StackLayout  >
-            <Label Text="{Binding Title}" FontSize="35"/>
-            <Label HeightRequest="15"/>
-            <Label Text="{Binding Message}" FontSize="30"/>
-        </StackLayout>
-        <HorizontalStackLayout Spacing="10" >
-            <Image Source="{Binding Image}"/>
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
-</ContentPage>
 
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" Margin="10">
+            <StackLayout>
+                <Label Text="{Binding Title}" FontSize="35"/>
+                <Label HeightRequest="15"/>
+                <Label Text="{Binding Message}" FontSize="30"/>
+                <Label HeightRequest="15"/>
+                <Label Text="Edad:21" FontSize="30"/>
+            </StackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <Image Source="{Binding Image}"/>
+            </HorizontalStackLayout>
+
+            <StackLayout>
+                <Label Text="Jhonatan Tipan" FontSize="35"/>
+                <Label HeightRequest="15"/>
+                <Label Text="Deporte Favorito:Futbol" FontSize="30"/>
+                <Label HeightRequest="15"/>
+                <Label Text="Edad:20" FontSize="30"/>
+            </StackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <Image Source="imagenjhonatan.jpg"/>
+            </HorizontalStackLayout>
+
+            <StackLayout>
+                <Label Text="Roberto Zamora" FontSize="35"/>
+                <Label HeightRequest="15"/>
+                <Label Text="Deporte Favorito:Futbol" FontSize="30"/>
+                <Label HeightRequest="15"/>
+                <Label Text="Edad:20" FontSize="30"/>
+            </StackLayout>
+
+            <HorizontalStackLayout Spacing="10">
+                <Image Source="imagenroberto.jpg"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
